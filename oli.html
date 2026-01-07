@@ -23,13 +23,14 @@
             color: #ff69b4;
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.5);
+            margin-bottom: 30px;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.85);
-            padding: 20px;
+            padding: 25px;
             border-radius: 20px;
             box-shadow: 0 0 20px rgba(255, 182, 193, 0.7);
         }
@@ -47,6 +48,7 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             animation: fadeIn 0.6s;
             font-size: 1.1em;
+            line-height: 1.6;
         }
 
         @keyframes fadeIn {
@@ -54,6 +56,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        .no-deudas {
+            text-align: center;
+            font-size: 1.3em;
+            color: #ff69b4;
+            padding: 40px;
+        }
+
+        /* Personajes cute con transparencia */
         .character {
             position: absolute;
             width: 90px;
@@ -72,9 +82,17 @@
             animation: rotate 8s infinite linear;
         }
 
-        @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
-        @keyframes rotate { from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg)} }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
 
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Corazones flotantes */
         .heart {
             position: absolute;
             width: 30px;
@@ -92,8 +110,10 @@
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
 
+        /* Responsivo para celular */
         @media (max-width: 600px) {
             h1 { font-size: 2em; }
+            .container { padding: 15px; }
             li { padding: 15px; font-size: 1em; }
             .character { width: 70px; }
             #pompompurin { width: 100px; }
@@ -107,57 +127,60 @@
 
     <div class="container">
         <h1>Tus Deudas, Mi Amor 💕🐻🐰🐶</h1>
-        <ul id="listaDeudas"></ul>
+        <ul id="listaDeudas">
+            <li class="no-deudas">Cargando tus deudas... 😘</li>
+        </ul>
     </div>
 
+    <!-- Firebase SDK -->
     <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js';
+        import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js';
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDmzzs9GDF6lquV1_e9GW0wqNwTmP7VAJE",
-    authDomain: "amore-e755d.firebaseapp.com",
-    projectId: "amore-e755d",
-    storageBucket: "amore-e755d.firebasestorage.app",
-    messagingSenderId: "90559151794",
-    appId: "1:90559151794:web:803f4609a89dda4c6653ab",
-    measurementId: "G-JE3RD59E50"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+        // TU CONFIGURACIÓN EXACTA DE "amore-e755d" (sin barra final en databaseURL)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDmzzs9GDF6lquV1_e9GW0wqNwTmP7VAJE",
+            authDomain: "amore-e755d.firebaseapp.com",
+            databaseURL: "https://amore-e755d-default-rtdb.firebaseio.com",  // ← SIN /
+            projectId: "amore-e755d",
+            storageBucket: "amore-e755d.firebasestorage.app",
+            messagingSenderId: "90559151794",
+            appId: "1:90559151794:web:803f4609a89dda4c6653ab"
+        };
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const deudasRef = ref(db, 'deudas');
 
+        // Mostrar deudas en tiempo real
         onValue(deudasRef, (snapshot) => {
             const lista = document.getElementById('listaDeudas');
             lista.innerHTML = '';
-            if (snapshot.exists()) {
+
+            if (snapshot.exists() && snapshot.hasChildren()) {
                 snapshot.forEach((child) => {
                     const data = child.val();
                     const restante = data.cantidad - data.pagado;
+
                     const li = document.createElement('li');
                     li.innerHTML = `
-                        <strong>${data.descripcion}</strong><br><br>
-                        ${data.tipo === 'dinero' ? '💸' : '😘'} Total: ${data.cantidad}<br>
+                        <strong>${data.descripcion || 'Sin descripción'}</strong><br><br>
+                        ${data.tipo === 'dinero' ? '💸' : '😘'} Total: <strong>${data.cantidad}</strong><br>
                         Pagado: ${data.pagado}<br>
-                        <strong>Restante: ${restante}</strong>
+                        <strong style="color:#ff69b4;">Restante: ${restante}</strong>
                     `;
                     lista.appendChild(li);
                 });
             } else {
-                lista.innerHTML = '<li style="text-align:center; color:#ff69b4;">¡No tienes deudas pendientes! 🥰</li>';
+                lista.innerHTML = '<li class="no-deudas">¡No tienes deudas pendientes! 🥰✨<br>¡Eres el mejor novio del mundo! 💕</li>';
             }
+        }, (error) => {
+            document.getElementById('listaDeudas').innerHTML = 
+                '<li class="no-deudas" style="color:red;">Error de conexión 😢<br>Intenta refrescar la página.</li>';
+            console.error(error);
         });
 
+        // Corazones flotantes 💖
         function createHeart() {
             const heart = document.createElement('div');
             heart.className = 'heart';
