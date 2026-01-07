@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tus Deudas, Mi Amor 💕</title>
+    <title>las deudas de dabid</title>
     <style>
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
@@ -126,9 +126,9 @@
     <img src="https://i.pinimg.com/736x/dc/e0/0b/dce00ba61d8aad8ffe222d036f184ad6.jpg" class="character" id="pompompurin" alt="Pompompurin">
 
     <div class="container">
-        <h1>Tus Deudas, Mi Amor 💕🐻🐰🐶</h1>
+        <h1>lo ke debes x mute</h1>
         <ul id="listaDeudas">
-            <li class="no-deudas">Cargando tus deudas... 😘</li>
+            <li class="no-deudas">kargando lasdeudes</li>
         </ul>
     </div>
 
@@ -165,18 +165,18 @@
                     const li = document.createElement('li');
                     li.innerHTML = `
                         <strong>${data.descripcion || 'Sin descripción'}</strong><br><br>
-                        ${data.tipo === 'dinero' ? '💸' : '😘'} Total: <strong>${data.cantidad}</strong><br>
+                        ${data.tipo === 'dinero' ? '' : ''} Total: <strong>${data.cantidad}</strong><br>
                         Pagado: ${data.pagado}<br>
                         <strong style="color:#ff69b4;">Restante: ${restante}</strong>
                     `;
                     lista.appendChild(li);
                 });
             } else {
-                lista.innerHTML = '<li class="no-deudas">¡No tienes deudas pendientes! 🥰✨<br>¡Eres el mejor novio del mundo! 💕</li>';
+                lista.innerHTML = '<li class="no-deudas">no tienes deudes 🥰✨<br> ke milagre</li>';
             }
         }, (error) => {
             document.getElementById('listaDeudas').innerHTML = 
-                '<li class="no-deudas" style="color:red;">Error de conexión 😢<br>Intenta refrescar la página.</li>';
+                '<li class="no-deudas" style="color:red;">error de conesion<br>Intenta refrescar la página.</li>';
             console.error(error);
         });
 
