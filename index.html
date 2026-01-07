@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deudas de Mi Amor 💕 - Admin</title>
     <style>
-        /* Estilos generales para un tema cute y amoroso */
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-image: url('https://i.pinimg.com/736x/98/0b/90/980b9081c1ae69481e4e6637f8b620ab.jpg'); /* Fondo Rilakkuma */
+            background-image: url('https://i.pinimg.com/736x/98/0b/90/980b9081c1ae69481e4e6637f8b620ab.jpg');
             background-size: cover;
             background-position: center;
             color: #333;
@@ -16,11 +15,12 @@
             padding: 20px;
             overflow-x: hidden;
             position: relative;
+            min-height: 100vh;
         }
 
         h1 {
             text-align: center;
-            color: #ff69b4; /* Rosa cute */
+            color: #ff69b4;
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.5);
         }
@@ -28,13 +28,12 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            background: rgba(255, 255, 255, 0.85);
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 0 20px rgba(255, 182, 193, 0.7);
         }
 
-        /* Formulario para agregar deudas */
         form {
             display: flex;
             flex-direction: column;
@@ -43,9 +42,9 @@
         }
 
         input, select, button {
-            padding: 10px;
+            padding: 12px;
             border: 2px solid #ffb6c1;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1em;
         }
 
@@ -53,14 +52,24 @@
             background: #ff69b4;
             color: white;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s;
         }
 
         button:hover {
             transform: scale(1.05);
+            background: #ff8ac4;
         }
 
-        /* Lista de deudas */
+        .btn-vista {
+            background: #ffb6c1;
+            font-size: 1.1em;
+            padding: 15px;
+            margin: 20px auto;
+            display: block;
+            width: 80%;
+            max-width: 400px;
+        }
+
         ul {
             list-style: none;
             padding: 0;
@@ -73,7 +82,7 @@
             border-radius: 15px;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             animation: fadeIn 0.5s;
         }
 
@@ -89,101 +98,93 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Imágenes de personajes */
+        /* Personajes con transparencia */
         .character {
             position: absolute;
-            width: 80px; /* Más pequeño para móviles */
-            animation: bounce 2s infinite;
+            width: 90px;
+            opacity: 0.7; /* Transparencia suave */
+            animation: bounce 3s infinite;
+            pointer-events: none;
         }
 
-        #rilakkuma {
-            top: 20px;
-            left: 20px;
-            content: url('https://cutekawaiiresources.wordpress.com/wp-content/uploads/2013/03/54_1920_1080.jpg'); /* Rilakkuma */
-        }
-
-        #usagi {
-            bottom: 20px;
-            right: 20px;
-            content: url('https://pbs.twimg.com/amplify_video_thumb/1889971901771952128/img/NJxDERtJr_TcmfP_.jpg'); /* Usagi */
-        }
-
+        #rilakkuma { top: 10px; left: 10px; }
+        #usagi { bottom: 10px; right: 10px; }
         #pompompurin {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 120px; /* Ajustado */
-            content: url('https://i.pinimg.com/736x/dc/e0/0b/dce00ba61d8aad8ffe222d036f184ad6.jpg'); /* Pompompurin */
-            animation: rotate 5s infinite linear;
+            width: 130px;
+            animation: rotate 8s infinite linear;
         }
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-15px); }
         }
 
         @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* Animaciones de corazones flotantes */
+        /* Corazones flotantes */
         .heart {
             position: absolute;
             width: 30px;
             height: 30px;
-            background: url('https://i.pinimg.com/originals/77/a8/b8/77a8b8443c6c904b1fa32adfddd43b86.gif') no-repeat center/cover; /* Corazón animado */
-            opacity: 0.8;
+            background: url('https://i.pinimg.com/originals/77/a8/b8/77a8b8443c6c904b1fa32adfddd43b86.gif') center/cover no-repeat;
+            opacity: 0.7;
             animation: float 15s linear infinite;
+            pointer-events: none;
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
 
-        /* Responsivo para móviles */
+        /* Responsivo */
         @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            h1 {
-                font-size: 2em;
-            }
-            .container {
-                padding: 15px;
-            }
-            form {
-                gap: 8px;
-            }
-            input, select, button {
-                font-size: 0.9em;
-            }
-            li {
-                padding: 10px;
-            }
-            .character {
-                width: 60px;
-            }
-            #pompompurin {
-                width: 100px;
-            }
+            h1 { font-size: 2em; }
+            .container { padding: 15px; }
+            .character { width: 70px; }
+            #pompompurin { width: 100px; }
+            .btn-vista { width: 90%; font-size: 1em; }
         }
     </style>
-    <!-- Firebase SDK -->
+</head>
+<body>
+    <img src="https://cutekawaiiresources.wordpress.com/wp-content/uploads/2013/03/54_1920_1080.jpg" class="character" id="rilakkuma" alt="Rilakkuma">
+    <img src="https://pbs.twimg.com/amplify_video_thumb/1889971901771952128/img/NJxDERtJr_TcmfP_.jpg" class="character" id="usagi" alt="Usagi">
+    <img src="https://i.pinimg.com/736x/dc/e0/0b/dce00ba61d8aad8ffe222d036f184ad6.jpg" class="character" id="pompompurin" alt="Pompompurin">
+
+    <div class="container">
+        <h1>Deudas de Mi Pareja 💕 - Admin</h1>
+
+        <button class="btn-vista" onclick="window.open('vista.html', '_blank')">
+            💖 Ver solo las deudas (para mi amor) 💖
+        </button>
+
+        <form id="formDeuda">
+            <select id="tipo">
+                <option value="dinero">Dinero 💸</option>
+                <option value="besos">Besos 😘</option>
+            </select>
+            <input type="number" id="cantidad" placeholder="Cantidad" step="0.01" min="1" required>
+            <input type="text" id="descripcion" placeholder="Descripción (opcional)">
+            <button type="button" onclick="agregarDeuda()">Agregar Deuda</button>
+        </form>
+
+        <ul id="listaDeudas"></ul>
+    </div>
+
+    <!-- Firebase -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js';
         import { getDatabase, ref, push, onValue, update, remove } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js';
 
-        // Tu configuración de Firebase (reemplaza con tus valores de "amore")
         const firebaseConfig = {
             apiKey: "TU_API_KEY",
             authDomain: "TU_PROYECTO.firebaseapp.com",
@@ -194,12 +195,10 @@
             appId: "TU_APP_ID"
         };
 
-        // Inicializar Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const deudasRef = ref(db, 'deudas');
 
-        // Función para agregar deuda
         window.agregarDeuda = function() {
             const tipo = document.getElementById('tipo').value;
             const cantidad = parseFloat(document.getElementById('cantidad').value);
@@ -210,13 +209,12 @@
                     tipo: tipo,
                     cantidad: cantidad,
                     pagado: 0,
-                    descripcion: descripcion
+                    descripcion: descripcion || 'Sin descripción'
                 });
                 document.getElementById('formDeuda').reset();
             }
         };
 
-        // Función para mostrar deudas
         onValue(deudasRef, (snapshot) => {
             const lista = document.getElementById('listaDeudas');
             lista.innerHTML = '';
@@ -224,11 +222,14 @@
                 const id = childSnapshot.key;
                 const data = childSnapshot.val();
                 const restante = data.cantidad - data.pagado;
+
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <span>${data.descripcion || 'Sin descripción'} - ${data.tipo}: ${data.cantidad} (Pagado: ${data.pagado}, Restante: ${restante})</span>
+                    <strong>${data.descripcion}</strong><br>
+                    ${data.tipo === 'dinero' ? '💸' : '😘'} ${data.cantidad} 
+                    (Pagado: ${data.pagado}, Restante: ${restante})
                     <div>
-                        <input type="number" id="pago-${id}" placeholder="Pago" step="0.01" min="0">
+                        <input type="number" id="pago-${id}" placeholder="Cantidad a pagar" step="0.01" min="0">
                         <button onclick="pagarDeuda('${id}', ${restante})">Pagar</button>
                         <button onclick="editarDeuda('${id}')">Editar</button>
                         <button onclick="eliminarDeuda('${id}')">Eliminar</button>
@@ -238,67 +239,43 @@
             });
         });
 
-        // Función para pagar
         window.pagarDeuda = function(id, restante) {
-            const pago = parseFloat(document.getElementById(`pago-${id}`).value);
+            const pago = parseFloat(document.getElementById(`pago-${id}`).value || 0);
             if (pago > 0 && pago <= restante) {
                 const deudaRef = ref(db, `deudas/${id}`);
-                onValue(deudaRef, (snapshot) => {
-                    const data = snapshot.val();
-                    update(deudaRef, { pagado: data.pagado + pago });
+                onValue(deudaRef, (snap) => {
+                    update(deudaRef, { pagado: snap.val().pagado + pago });
                 }, { onlyOnce: true });
             }
         };
 
-        // Función para editar
         window.editarDeuda = function(id) {
-            const nuevaCantidad = prompt('Nueva cantidad:');
+            const nuevaCant = prompt('Nueva cantidad total:');
             const nuevaDesc = prompt('Nueva descripción:');
-            if (nuevaCantidad) {
+            if (nuevaCant) {
                 update(ref(db, `deudas/${id}`), {
-                    cantidad: parseFloat(nuevaCantidad),
-                    descripcion: nuevaDesc
+                    cantidad: parseFloat(nuevaCant),
+                    descripcion: nuevaDesc || 'Sin descripción'
                 });
             }
         };
 
-        // Función para eliminar
         window.eliminarDeuda = function(id) {
-            if (confirm('¿Eliminar esta deuda?')) {
+            if (confirm('¿Segura que quieres eliminar esta deuda?')) {
                 remove(ref(db, `deudas/${id}`));
             }
         };
 
-        // Crear corazones flotantes
+        // Corazones
         function createHeart() {
             const heart = document.createElement('div');
             heart.className = 'heart';
-            heart.style.left = `${Math.random() * 100}vw`;
-            heart.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 20000);
         }
-
-        setInterval(createHeart, 1000);
+        setInterval(createHeart, 1200);
     </script>
-</head>
-<body>
-    <div class="character" id="rilakkuma"></div>
-    <div class="character" id="usagi"></div>
-    <div class="character" id="pompompurin"></div>
-
-    <div class="container">
-        <h1>Deudas de Mi Pareja 💕🐻🐶🐰 - Admin</h1>
-        <form id="formDeuda">
-            <select id="tipo">
-                <option value="dinero">Dinero</option>
-                <option value="besos">Besos</option>
-            </select>
-            <input type="number" id="cantidad" placeholder="Cantidad" step="0.01" min="1" required>
-            <input type="text" id="descripcion" placeholder="Descripción (opcional)">
-            <button type="button" onclick="agregarDeuda()">Agregar Deuda</button>
-        </form>
-        <ul id="listaDeudas"></ul>
-    </div>
 </body>
 </html>
