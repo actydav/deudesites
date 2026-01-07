@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deudas de Mi Amor 💕 - Vista</title>
+    <style>
+        /* Estilos generales para un tema cute y amoroso */
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-image: url('https://i.pinimg.com/736x/98/0b/90/980b9081c1ae69481e4e6637f8b620ab.jpg'); /* Fondo Rilakkuma */
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff69b4; /* Rosa cute */
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.5);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 182, 193, 0.7);
+        }
+
+        /* Lista de deudas */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #fff0f5;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Imágenes de personajes */
+        .character {
+            position: absolute;
+            width: 80px; /* Más pequeño para móviles */
+            animation: bounce 2s infinite;
+        }
+
+        #rilakkuma {
+            top: 20px;
+            left: 20px;
+            content: url('https://cutekawaiiresources.wordpress.com/wp-content/uploads/2013/03/54_1920_1080.jpg'); /* Rilakkuma */
+        }
+
+        #usagi {
+            bottom: 20px;
+            right: 20px;
+            content: url('https://pbs.twimg.com/amplify_video_thumb/1889971901771952128/img/NJxDERtJr_TcmfP_.jpg'); /* Usagi */
+        }
+
+        #pompompurin {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px; /* Ajustado */
+            content: url('https://i.pinimg.com/736x/dc/e0/0b/dce00ba61d8aad8ffe222d036f184ad6.jpg'); /* Pompompurin */
+            animation: rotate 5s infinite linear;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Animaciones de corazones flotantes */
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: url('https://i.pinimg.com/originals/77/a8/b8/77a8b8443c6c904b1fa32adfddd43b86.gif') no-repeat center/cover; /* Corazón animado */
+            opacity: 0.8;
+            animation: float 15s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsivo para móviles */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .container {
+                padding: 15px;
+            }
+            li {
+                padding: 10px;
+            }
+            .character {
+                width: 60px;
+            }
+            #pompompurin {
+                width: 100px;
+            }
+        }
+    </style>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js';
+        import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js';
+
+        // Tu configuración de Firebase (reemplaza con tus valores de "amore")
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_PROYECTO.firebaseapp.com",
+            databaseURL: "https://TU_PROYECTO-default-rtdb.firebaseio.com",
+            projectId: "TU_PROYECTO",
+            storageBucket: "TU_PROYECTO.appspot.com",
+            messagingSenderId: "TU_SENDER_ID",
+            appId: "TU_APP_ID"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const deudasRef = ref(db, 'deudas');
+
+        // Función para mostrar deudas (solo vista)
+        onValue(deudasRef, (snapshot) => {
+            const lista = document.getElementById('listaDeudas');
+            lista.innerHTML = '';
+            snapshot.forEach((childSnapshot) => {
+                const data = childSnapshot.val();
+                const restante = data.cantidad - data.pagado;
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${data.descripcion || 'Sin descripción'} - ${data.tipo}: ${data.cantidad} (Pagado: ${data.pagado}, Restante: ${restante})</span>
+                `;
+                lista.appendChild(li);
+            });
+        });
+
+        // Crear corazones flotantes
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 20000);
+        }
+
+        setInterval(createHeart, 1000);
+    </script>
+</head>
+<body>
+    <div class="character" id="rilakkuma"></div>
+    <div class="character" id="usagi"></div>
+    <div class="character" id="pompompurin"></div>
+
+    <div class="container">
+        <h1>Tus Deudas, Mi Amor 💕🐻🐶🐰</h1>
+        <ul id="listaDeudas"></ul>
+    </div>
+</body>
+</html>
